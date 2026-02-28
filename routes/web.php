@@ -18,3 +18,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('incomes', [IncomeController::class, 'store']);
     Route::post('expenses', [ExpenseController::class, 'store']);
 });
+
+Route::post('pockets/{id}/create-report',[ReportController::class, 'create']);
+Route::get('reports/{file}', [ReportController::class,'download']);
