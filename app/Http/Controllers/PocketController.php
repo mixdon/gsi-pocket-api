@@ -11,7 +11,14 @@ class PocketController extends Controller
     {
         $pockets = UserPocket::query()
             ->where('user_id', auth('api')->id())
-            ->get(['id', 'name', 'balance']);
+            ->get()
+            ->map(function ($pocket) {
+                return [
+                    'id'              => $pocket->id,
+                    'name'            => $pocket->name,
+                    'current_balance' => $pocket->balance,
+                ];
+            });
 
         return response()->json([
             'status'  => 200,
@@ -39,8 +46,7 @@ class PocketController extends Controller
             'error'   => false,
             'message' => 'Berhasil membuat pocket baru.',
             'data'    => [
-                'id'      => $pocket->id,
-                'balance' => $pocket->balance,
+                'id' => $pocket->id,
             ],
         ]);
     }

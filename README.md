@@ -1,59 +1,236 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 GSI Pocket API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Backend REST API for **Pocket Management System**, designed to manage personal financial pockets including income, expenses, and asynchronous report generation.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📌 Overview
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**GSI Pocket API** is a Laravel-based backend service that allows users to:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* Manage financial pockets
+* Record incomes and expenses
+* Generate financial reports asynchronously
+* Export reports to Excel
+* Authenticate securely using JWT
 
-## Learning Laravel
+The system implements **Queue Jobs** to handle heavy processes such as report generation without blocking API responses.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🛠 Tech Stack
 
-## Laravel Sponsors
+| Technology        | Description               |
+| ----------------- | ------------------------- |
+| **Laravel 12**    | Backend Framework         |
+| **PHP 8.3**       | Server-side Language      |
+| **PostgreSQL**    | Database                  |
+| **JWT Auth**      | Authentication System     |
+| **Laravel Queue** | Background Job Processing |
+| **Laravel Excel** | Report Export (.xlsx)     |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## ⚙️ Features
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+✅ JWT Authentication
+✅ Pocket Management
+✅ Income & Expense Tracking
+✅ Async Report Generation (Queue Job)
+✅ Excel Report Export
+✅ RESTful API Architecture
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 📂 Project Structure
 
-## Code of Conduct
+```
+app/
+ ├── Http/Controllers
+ ├── Jobs
+ ├── Models
+ ├── Exports
+routes/
+ ├── api.php
+ └── web.php
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🚀 Installation & Setup
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 1️⃣ Clone Repository
 
-## License
+```bash
+git clone https://github.com/your-username/gsi-pocket-api.git
+cd gsi-pocket-api
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+### 2️⃣ Install Dependencies
+
+```bash
+composer install
+```
+
+---
+
+### 3️⃣ Environment Configuration
+
+```bash
+cp .env.example .env
+```
+
+Configure database connection inside `.env`.
+
+---
+
+### 4️⃣ Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+---
+
+### 5️⃣ Generate JWT Secret
+
+```bash
+php artisan jwt:secret
+```
+
+---
+
+### 6️⃣ Run Migration & Seeder
+
+```bash
+php artisan migrate --seed
+```
+
+---
+
+### 7️⃣ Create Storage Link
+
+```bash
+php artisan storage:link
+```
+
+---
+
+### 8️⃣ Start Queue Worker
+
+Required for async report generation:
+
+```bash
+php artisan queue:work
+```
+
+---
+
+### 9️⃣ Run Development Server
+
+```bash
+php artisan serve
+```
+
+Application will run at:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 🔄 Queue System
+
+Report exports are processed using Laravel Queue Jobs.
+
+Flow:
+
+```
+Request Report
+      ↓
+Job Dispatched
+      ↓
+Queue Worker Process
+      ↓
+Excel File Generated
+      ↓
+Download Available
+```
+
+---
+
+## 🔐 Authentication
+
+Authentication uses **JWT Token**.
+
+Example login flow:
+
+```
+POST /api/auth/login
+↓
+Receive Token
+↓
+Authorize using Bearer Token
+```
+
+---
+
+## 📊 Report Export
+
+Users can generate pocket reports in Excel format asynchronously.
+
+Generated files are stored in:
+
+```
+storage/app/public/reports
+```
+
+Download endpoint:
+
+```
+GET /reports/{filename}
+```
+
+---
+
+## 🧪 Running Queue Worker (Recommended)
+
+Keep queue running during development:
+
+```bash
+php artisan queue:work --queue=reports
+```
+
+---
+
+## 📎 API Base URL
+
+```
+/api
+```
+
+Example endpoints:
+
+| Method | Endpoint                    | Description     |
+| ------ | --------------------------- | --------------- |
+| POST   | /auth/login                 | User Login      |
+| GET    | /auth/profile               | User Profile    |
+| POST   | /pockets                    | Create Pocket   |
+| POST   | /incomes                    | Add Income      |
+| POST   | /expenses                   | Add Expense     |
+| POST   | /pockets/{id}/create-report | Generate Report |
+
+---
+
+## 👨‍💻 Author
+
+Developed by **Doni Kurniawan**
+
+---
+
+## 📄 License
+
+This project is open-source and available under the MIT License.

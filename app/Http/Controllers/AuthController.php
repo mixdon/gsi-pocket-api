@@ -27,7 +27,6 @@ class AuthController extends Controller
             'message' => 'Berhasil login.',
             'data'    => [
                 'token' => $token,
-                'type'  => 'bearer',
             ],
         ]);
     }
@@ -39,9 +38,8 @@ class AuthController extends Controller
         return response()->json([
             'status'  => 200,
             'error'   => false,
-            'message' => 'Berhasil.',
+            'message' => 'Berhasil login.',
             'data'    => [
-                'id'        => $user->id,
                 'full_name' => $user->full_name,
                 'email'     => $user->email,
             ],

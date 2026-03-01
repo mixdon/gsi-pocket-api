@@ -17,7 +17,7 @@ class IncomeController extends Controller
             'notes'     => ['nullable', 'string'],
         ]);
 
-        $income = DB::transaction(function () use ($data) {
+        [$income, $pocket] = DB::transaction(function () use ($data) {
             $pocket = UserPocket::query()
                 ->where('id', $data['pocket_id'])
                 ->where('user_id', auth('api')->id())
@@ -32,11 +32,10 @@ class IncomeController extends Controller
             ]);
 
             $pocket->increment('balance', $data['amount']);
+            $pocket->refresh();
 
             return [$income, $pocket];
         });
-
-        [$income, $pocket] = $income;
 
         return response()->json([
             'status'  => 200,

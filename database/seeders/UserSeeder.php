@@ -11,23 +11,25 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::insert([
+        $user1 = User::firstOrCreate(
+            ['email' => 'example1@mail.net'],
             [
                 'id' => Str::uuid(),
                 'full_name' => 'User 1',
-                'email' => 'example1@mail.net',
                 'password' => Hash::make('password'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+            ]
+        );
+
+        $user2 = User::firstOrCreate(
+            ['email' => 'example2@mail.net'],
             [
                 'id' => Str::uuid(),
                 'full_name' => 'User 2',
-                'email' => 'example2@mail.net',
                 'password' => Hash::make('password'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+            ]
+        );
+
+        $this->command->info("User 1 ID: {$user1->id}");
+        $this->command->info("User 2 ID: {$user2->id}");
     }
 }

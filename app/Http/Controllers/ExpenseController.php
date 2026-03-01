@@ -17,7 +17,7 @@ class ExpenseController extends Controller
             'notes'     => ['nullable', 'string'],
         ]);
 
-        $expense = DB::transaction(function () use ($data) {
+        [$expense, $pocket] = DB::transaction(function () use ($data) {
             $pocket = UserPocket::query()
                 ->where('id', $data['pocket_id'])
                 ->where('user_id', auth('api')->id())
@@ -25,11 +25,11 @@ class ExpenseController extends Controller
                 ->firstOrFail();
 
             if ($pocket->balance < $data['amount']) {
-                abort(response()->json([
+                return response()->json([
                     'status'  => 400,
                     'error'   => true,
                     'message' => 'Saldo tidak mencukupi.',
-                ], 400));
+                ], 400)->throwResponse();
             }
 
             $expense = Expense::create([
@@ -40,11 +40,10 @@ class ExpenseController extends Controller
             ]);
 
             $pocket->decrement('balance', $data['amount']);
+            $pocket->refresh();
 
             return [$expense, $pocket];
         });
-
-        [$expense, $pocket] = $expense;
 
         return response()->json([
             'status'  => 200,
